@@ -8,18 +8,90 @@
 
 import UIKit
 import CoreData
+import Alamofire
+import SwiftyJSON
+
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //http://madiosgames.com/api/v1/application/ios_test_task/articles
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
+        // Create Entity Description
+        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
+        
+        // Configure Fetch Request
+        fetchRequest.entity = entityDescription
+        
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        
+        
+        do {
+            //delete all
+            try managedObjectContext.execute(request)
+            try self.managedObjectContext.save()
+        } catch {
+            let saveError = error as NSError
+            print(saveError)
+        
+        
+        
+        
+        }
+        
+        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles").responseJSON { response in
+            //create entity
+//            do {
+//                
+//                let jsonObj = try! JSON(data: response.data!)
+//                if jsonObj != JSON.null {
+//                    for obj in jsonObj {
+//                        
+//                        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+//                                return
+//                        }
+//            
+//                        let managedContext = appDelegate.persistentContainer.viewContext
+//            
+//                        
+//                        
+//                        let entity = NSEntityDescription.entity(forEntityName: "Article",
+//                                                       in: managedContext)!
+//            
+//                        let person = NSManagedObject(entity: entity,
+//                                                     insertInto: managedContext)
+//                        
+//                        person.setValue(obj.1["title"].stringValue, forKeyPath: "title")
+//                        
+//                        do {
+//                            try person.managedObjectContext?.save()
+//                            //try managedContext.save()
+//                        } catch let error as NSError {
+//                            print("Could not save. \(error), \(error.userInfo)")
+//                        }
+//
+//                        
+//                    }
+//                } else {
+//                    print("Could not get json from file, make sure that file contains valid json.")
+//                }
+//            } catch let error { print(error.localizedDescription) }
+            
+        }
+        
         return true
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
@@ -72,6 +144,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
+    
+    
+    
+    
+    lazy var managedObjectContext: NSManagedObjectContext = {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let managedContext = appDelegate?.persistentContainer.viewContext
+        return managedContext!
+    }()
+    
+    
+    
 
     // MARK: - Core Data Saving support
 
