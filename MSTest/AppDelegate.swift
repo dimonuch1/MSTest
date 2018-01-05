@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         fetchRequest.entity = entityDescription
         
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
         
         
@@ -43,54 +44,138 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             let saveError = error as NSError
             print(saveError)
-        
-        
-        
-        
+  
         }
         
-        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles").responseJSON { response in
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+        
+        
+        
+        
+        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles").responseJSON { (responseData) -> Void in
+            if((responseData.result.value) != nil) {
+                let swiftyJsonVar = JSON(responseData.result.value!)
+                
+                //print(swiftyJsonVar)
+            }
+        }
+        
+        
+        
+        
+        
+        
+        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
             //create entity
-//            do {
-//                
-//                let jsonObj = try! JSON(data: response.data!)
-//                if jsonObj != JSON.null {
-//                    for obj in jsonObj {
-//                        
+            do {
+                let jsonObj = JSON(response.data!)
+                if jsonObj != JSON.null {
+                    for obj in jsonObj {
+                    
+                        //print(obj )
 //                        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
 //                                return
 //                        }
-//            
 //                        let managedContext = appDelegate.persistentContainer.viewContext
-//            
-//                        
-//                        
-//                        let entity = NSEntityDescription.entity(forEntityName: "Article",
-//                                                       in: managedContext)!
-//            
-//                        let person = NSManagedObject(entity: entity,
-//                                                     insertInto: managedContext)
-//                        
-//                        person.setValue(obj.1["title"].stringValue, forKeyPath: "title")
-//                        
-//                        do {
-//                            try person.managedObjectContext?.save()
-//                            //try managedContext.save()
-//                        } catch let error as NSError {
-//                            print("Could not save. \(error), \(error.userInfo)")
+            
+                        
+                        let entity = NSEntityDescription.entity(forEntityName: "Article",
+                                                       in: self.managedObjectContext)!
+            
+                        let person = NSManagedObject(entity: entity,
+                                                     insertInto: self.managedObjectContext)
+
+                        person.setValue(obj.1["title"].string, forKeyPath: "title")
+                        person.setValue(obj.1["id"].int, forKeyPath: "id")
+                        person.setValue(obj.1["content_url"].stringValue, forKeyPath: "content_url")
+                        
+                        //image_medium
+                        
+                        
+                        
+                        print(obj.1["image_medium"].stringValue)
+                        print(obj.1["image_medium"].stringValue)
+                        //print(obj.1["content_url"])
+                        
+                        
+                        
+                        
+//                        print(obj.1["image_thumb"].stringValue)
+                        let string = obj.1["image_thumb"].stringValue
+//                        print(string)
+//                        print(obj.1["image_thumb"].stringValue)
+
+                       
+                        
+                        
+                        
+                        Alamofire.download(obj.1["image_medium"].stringValue).responseData { response in
+                            print(response)
+                            
+                            if response.result.value != nil {
+                                person.setValue(response.result.value, forKeyPath: "medium​")
+                            }
+                        }
+                        
+                     
+                        
+                        //image_thumb
+//                        guard let path_image_thumb = obj.1["image_thumb​"].string else {
+//                            return
 //                        }
+                       
+                        Alamofire.download(obj.1["image_thumb"].stringValue).responseData { response in
+                           print(response)
+                            if response.result.value != nil {
+                                person.setValue(response.result.value, forKeyPath: "thumb​")
+                            }
+                        }
+                       
+                        
+                        print(obj.1["image_thumb​"].stringValue)
+                        //let string = obj.1["image_thumb​"].stringValue
+                        //print(string)
+                        let url = URL(string: string)
+                        print(string)
+                        print(url)
+                        let data = try? Data(contentsOf: url!)
+                        person.setValue(data, forKeyPath: "medium​")
+                        print(data)
 //
-//                        
-//                    }
-//                } else {
-//                    print("Could not get json from file, make sure that file contains valid json.")
-//                }
-//            } catch let error { print(error.localizedDescription) }
+                        do {
+                            //try person.managedObjectContext?.save()
+                            try self.managedObjectContext.save()
+                        } catch let error as NSError {
+                            print("Could not save. \(error), \(error.userInfo)")
+                        }
+
+                        
+                    }
+                } else {
+                    print("Could not get json from file, make sure that file contains valid json.")
+                }
+            } catch let error { print(error.localizedDescription) }
             
         }
         
         return true
     }
+    
+    
+    
+    
+    
+    
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -41,6 +41,10 @@ class ViewController: UIViewController {
                 
                 for person in result {
                     print((person as! NSManagedObject).value(forKey:"title") ?? "none")
+                    print((person as! NSManagedObject).value(forKey:"id") ?? "none")
+                    print((person as! NSManagedObject).value(forKey:"image_thumb") ?? "none")
+                    print((person as! NSManagedObject).value(forKey:"image_medium") ?? "none")
+                    print((person as! NSManagedObject).value(forKey:"content_url") ?? "none")
                 }
             
             }
