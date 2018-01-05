@@ -7,11 +7,13 @@
         <attribute name="image_thumb" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class"/>
     <entity name="Test" representedClassName="Test" syncable="YES" codeGenerationType="class">
         <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <elements>
         <element name="Article" positionX="-63" positionY="-18" width="128" height="118"/>
         <element name="Test" positionX="-63" positionY="18" width="128" height="58"/>
+        <element name="Entity" positionX="-54" positionY="27" width="128" height="45"/>
     </elements>
 </model>
