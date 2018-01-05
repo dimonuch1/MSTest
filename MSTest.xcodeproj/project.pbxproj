@@ -15,6 +15,8 @@
 		321AC3631FFE9617008542D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 321AC3611FFE9617008542D3 /* LaunchScreen.storyboard */; };
 		32BA72531FFEA465005D4433 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BA72521FFEA465005D4433 /* Alamofire.framework */; };
 		32BA72551FFEA46A005D4433 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BA72541FFEA46A005D4433 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		32CBF8151FFFD51400973091 /* MainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF8141FFFD51400973091 /* MainTableView.swift */; };
+		32CBF8171FFFD5F000973091 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF8161FFFD5F000973091 /* MainTableViewCell.swift */; };
 		8592E5270B6C140A18E56207 /* Pods_MSTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BAF9E3730CFD03B2764D2E25 /* Pods_MSTest.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +31,8 @@
 		321AC3641FFE9617008542D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32BA72521FFEA465005D4433 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "Pods/../build/Debug-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		32BA72541FFEA46A005D4433 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
+		32CBF8141FFFD51400973091 /* MainTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableView.swift; sourceTree = "<group>"; };
+		32CBF8161FFFD5F000973091 /* MainTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		83900C90D5104D9CABBE85F3 /* Pods-MSTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSTest.release.xcconfig"; path = "Pods/Target Support Files/Pods-MSTest/Pods-MSTest.release.xcconfig"; sourceTree = "<group>"; };
 		8A91420D0812906F5DEAEC6A /* Pods-MSTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MSTest.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MSTest/Pods-MSTest.debug.xcconfig"; sourceTree = "<group>"; };
 		BAF9E3730CFD03B2764D2E25 /* Pods_MSTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MSTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +80,8 @@
 				321AC3611FFE9617008542D3 /* LaunchScreen.storyboard */,
 				321AC3641FFE9617008542D3 /* Info.plist */,
 				321AC35C1FFE9617008542D3 /* MSTest.xcdatamodeld */,
+				32CBF8141FFFD51400973091 /* MainTableView.swift */,
+				32CBF8161FFFD5F000973091 /* MainTableViewCell.swift */,
 			);
 			path = MSTest;
 			sourceTree = "<group>";
@@ -232,7 +238,9 @@
 			files = (
 				321AC35E1FFE9617008542D3 /* MSTest.xcdatamodeld in Sources */,
 				321AC3581FFE9617008542D3 /* ViewController.swift in Sources */,
+				32CBF8151FFFD51400973091 /* MainTableView.swift in Sources */,
 				321AC3561FFE9617008542D3 /* AppDelegate.swift in Sources */,
+				32CBF8171FFFD5F000973091 /* MainTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
