@@ -8,10 +8,6 @@
 
 import UIKit
 import CoreData
-import Alamofire
-import SwiftyJSON
-
-
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,107 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
-        //http://madiosgames.com/api/v1/application/ios_test_task/articles
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        // Create Entity Description
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
-        // Configure Fetch Request
-        fetchRequest.entity = entityDescription
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
-        let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        
-        do {
-            //delete all
-            try managedObjectContext.execute(request)
-            try self.managedObjectContext.save()
-        } catch {
-            let saveError = error as NSError
-            print(saveError)
-  
-        }
-        
-        
-        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
-            //create entity
-            do {
-                let jsonObj = JSON(response.data!)
-                if jsonObj != JSON.null {
-                    for obj in jsonObj {
-  
-                        let entity = NSEntityDescription.entity(forEntityName: "Article",
-                                                       in: self.managedObjectContext)!
-                        let person = NSManagedObject(entity: entity,
-                                                     insertInto: self.managedObjectContext)
-                        person.setValue(obj.1["title"].string, forKey: "title")
-                        person.setValue(obj.1["id"].int, forKey: "id")
-                        person.setValue(obj.1["content_url"].stringValue, forKey: "content_url")
-                        
-                        let string = obj.1["image_thumb"].stringValue
-                        let string2 = obj.1["image_medium"].stringValue                 
-                        
-//                        Alamofire.download(obj.1["image_medium"].stringValue).responseData { response in
-//                            print(response)
-//                            
-//                            if response.result.value != nil {
-//                                person.setValue(response.result.value, forKey: "image_medium​")
-//                            }
-//                        }
- 
-                        
-                        //image_thumb
-//                        guard let path_image_thumb = obj.1["image_thumb​"].string else {
-//                            return
-//                        }
-                       
-//                        Alamofire.download(obj.1["image_thumb"].stringValue).responseData { response in
-//                           print(response)
-//                            if response.result.value != nil {
-//                                person.setValue(response.result.value, forKey: "image_thumb​")
-//                            }
-//                        }
-                       
-                        
-                        print(obj.1["image_thumb​"].stringValue)
-                        let url = URL(string: string)
-                        let data = try? Data(contentsOf: url!)
-                        let image = UIImage(data: data!)
-                        let imageData = UIImageJPEGRepresentation(image!, 1) as! NSData
-                        person.setValue(imageData, forKey: "image_thumb")
-                        
-                        
 
-                        print(obj.1["image_medium​"].stringValue)
-                        let url2 = URL(string: string2)
-                        let data2 = try? Data(contentsOf: url2!)
-                        let image2 = UIImage(data: data2!)
-                        let imageData2 = UIImageJPEGRepresentation(image2!, 1) as! NSData
-                        person.setValue(imageData2, forKey: "image_medium")
-                        
-                        
-                        do {
-                            //try person.managedObjectContext?.save()
-                            try self.managedObjectContext.save()
-                        } catch let error as NSError {
-                            print("Could not save. \(error), \(error.userInfo)")
-                        }
-
-                        
-                    }
-                } else {
-                    print("Could not get json from file, make sure that file contains valid json.")
-                }
-            } catch let error { print(error.localizedDescription) }
-            
-        }
-        
         return true
     }
-    
-    
-    
-    
-    
     
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -178,18 +76,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return container
     }()
     
-    
-    
-    
+
     lazy var managedObjectContext: NSManagedObjectContext = {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
         return managedContext!
     }()
     
-    
-    
-
+ 
     // MARK: - Core Data Saving support
 
     func saveContext () {

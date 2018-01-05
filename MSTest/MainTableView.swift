@@ -63,8 +63,6 @@ extension MainTableView: UITableViewDataSource {
         return (object?.count)!
     }
     
-    
-   
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! MainTableViewCell
         
@@ -72,7 +70,9 @@ extension MainTableView: UITableViewDataSource {
             fatalError("Attempt to configure cell without a managed object")
         }
         
-        cell.title.text = String(object.id)
+        cell.title.text = object.title
+        cell.picture.image = UIImage(data: object.image_medium! as Data)
+        
         return cell
     }
 }
