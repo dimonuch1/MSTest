@@ -24,18 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         //http://madiosgames.com/api/v1/application/ios_test_task/articles
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         // Create Entity Description
         let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
-        
         // Configure Fetch Request
         fetchRequest.entity = entityDescription
-        
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
-        
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        
         
         do {
             //delete all
@@ -48,110 +43,63 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        
-        
-        
-        
-        Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles").responseJSON { (responseData) -> Void in
-            if((responseData.result.value) != nil) {
-                let swiftyJsonVar = JSON(responseData.result.value!)
-                
-                //print(swiftyJsonVar)
-            }
-        }
-        
-        
-        
-        
-        
-        
         Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
             //create entity
             do {
                 let jsonObj = JSON(response.data!)
                 if jsonObj != JSON.null {
                     for obj in jsonObj {
-                    
-                        //print(obj )
-//                        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-//                                return
-//                        }
-//                        let managedContext = appDelegate.persistentContainer.viewContext
-            
-                        
+  
                         let entity = NSEntityDescription.entity(forEntityName: "Article",
                                                        in: self.managedObjectContext)!
-            
                         let person = NSManagedObject(entity: entity,
                                                      insertInto: self.managedObjectContext)
-
-                        person.setValue(obj.1["title"].string, forKeyPath: "title")
-                        person.setValue(obj.1["id"].int, forKeyPath: "id")
-                        person.setValue(obj.1["content_url"].stringValue, forKeyPath: "content_url")
+                        person.setValue(obj.1["title"].string, forKey: "title")
+                        person.setValue(obj.1["id"].int, forKey: "id")
+                        person.setValue(obj.1["content_url"].stringValue, forKey: "content_url")
                         
-                        //image_medium
-                        
-                        
-                        
-                        print(obj.1["image_medium"].stringValue)
-                        print(obj.1["image_medium"].stringValue)
-                        //print(obj.1["content_url"])
-                        
-                        
-                        
-                        
-//                        print(obj.1["image_thumb"].stringValue)
                         let string = obj.1["image_thumb"].stringValue
-//                        print(string)
-//                        print(obj.1["image_thumb"].stringValue)
-
-                       
+                        let string2 = obj.1["image_medium"].stringValue                 
                         
-                        
-                        
-                        Alamofire.download(obj.1["image_medium"].stringValue).responseData { response in
-                            print(response)
-                            
-                            if response.result.value != nil {
-                                person.setValue(response.result.value, forKeyPath: "medium​")
-                            }
-                        }
-                        
-                     
+//                        Alamofire.download(obj.1["image_medium"].stringValue).responseData { response in
+//                            print(response)
+//                            
+//                            if response.result.value != nil {
+//                                person.setValue(response.result.value, forKey: "image_medium​")
+//                            }
+//                        }
+ 
                         
                         //image_thumb
 //                        guard let path_image_thumb = obj.1["image_thumb​"].string else {
 //                            return
 //                        }
                        
-                        Alamofire.download(obj.1["image_thumb"].stringValue).responseData { response in
-                           print(response)
-                            if response.result.value != nil {
-                                person.setValue(response.result.value, forKeyPath: "thumb​")
-                            }
-                        }
+//                        Alamofire.download(obj.1["image_thumb"].stringValue).responseData { response in
+//                           print(response)
+//                            if response.result.value != nil {
+//                                person.setValue(response.result.value, forKey: "image_thumb​")
+//                            }
+//                        }
                        
                         
                         print(obj.1["image_thumb​"].stringValue)
-                        //let string = obj.1["image_thumb​"].stringValue
-                        //print(string)
                         let url = URL(string: string)
-                        print(string)
-                        print(url)
                         let data = try? Data(contentsOf: url!)
-                        person.setValue(data, forKeyPath: "medium​")
-                        print(data)
-//
+                        let image = UIImage(data: data!)
+                        let imageData = UIImageJPEGRepresentation(image!, 1) as! NSData
+                        person.setValue(imageData, forKey: "image_thumb")
+                        
+                        
+
+                        print(obj.1["image_medium​"].stringValue)
+                        let url2 = URL(string: string2)
+                        let data2 = try? Data(contentsOf: url2!)
+                        let image2 = UIImage(data: data2!)
+                        let imageData2 = UIImageJPEGRepresentation(image2!, 1) as! NSData
+                        person.setValue(imageData2, forKey: "image_medium")
+                        
+                        
                         do {
                             //try person.managedObjectContext?.save()
                             try self.managedObjectContext.save()
