@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import Alamofire
 import SwiftyJSON
+import NVActivityIndicatorView
 
 class ViewController: UIViewController {
     
@@ -19,16 +20,25 @@ class ViewController: UIViewController {
         return managedContext!
     }()
     
-    @IBOutlet weak var avtivityIndicator: UIActivityIndicatorView!
-    
     @IBOutlet weak var tableView: MainTableView!
     
     var refreshControl = UIRefreshControl()
     
+    var activityIndicator: NVActivityIndicatorView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.alpha = 0
-            
+        
+        activityIndicator = NVActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25 , y: self.view.center.y - 50, width: 100, height: 100 ) ,
+                                     type: .pacman ,
+                                    color: .red,
+                                  padding: 0)
+        activityIndicator?.startAnimating()
+        if activityIndicator != nil {
+            self.view.addSubview(activityIndicator!)
+        }
+        
         refresh()
         
         refreshControl.tintColor = .red
@@ -48,15 +58,21 @@ class ViewController: UIViewController {
     }
     
     func refresh() {
-        deleteAllFromBD()
-        parseAllData()
+        if self.isInternetAvailable() {
+            deleteAllFromBD()
+            parseAllData()
+        } else {
+            showAlertWithOutInternet()
+            activityIndicator?.stopAnimating()
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToWebView" {
             if sender is MainTableViewCell {
-                if let destinationViewController = segue.destination as? WebViewController {
+                if let destinationViewController = segue.destination.childViewControllers.first as? WebViewController {
                     destinationViewController.url = (sender as! MainTableViewCell).url
+                    destinationViewController.indexPath = (sender as! MainTableViewCell).index
                 }
             }
         }
@@ -146,9 +162,9 @@ class ViewController: UIViewController {
                     }
         
                     self.tableView.customReloadData()
-                    self.avtivityIndicator.isHidden = true
                     self.tableView.alpha = 1
                     self.refreshControl.endRefreshing()
+                    self.activityIndicator?.stopAnimating()
                 } else {
                     print("Could not get json from file, make sure that file contains valid json.")
                 }

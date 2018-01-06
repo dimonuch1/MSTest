@@ -14,6 +14,8 @@
 		321AC3601FFE9617008542D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 321AC35F1FFE9617008542D3 /* Assets.xcassets */; };
 		321AC3631FFE9617008542D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 321AC3611FFE9617008542D3 /* LaunchScreen.storyboard */; };
 		325EFE8A20010B9E00A13B91 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325EFE8920010B9E00A13B91 /* WebViewController.swift */; };
+		325EFE8C20011CB400A13B91 /* NVActivityIndicatorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 325EFE8B20011CB400A13B91 /* NVActivityIndicatorView.framework */; };
+		325EFE8E2001323D00A13B91 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325EFE8D2001323D00A13B91 /* Extensions.swift */; };
 		32BA72531FFEA465005D4433 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BA72521FFEA465005D4433 /* Alamofire.framework */; };
 		32BA72551FFEA46A005D4433 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32BA72541FFEA46A005D4433 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		32CBF8151FFFD51400973091 /* MainTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CBF8141FFFD51400973091 /* MainTableView.swift */; };
@@ -31,6 +33,8 @@
 		321AC3621FFE9617008542D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		321AC3641FFE9617008542D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		325EFE8920010B9E00A13B91 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		325EFE8B20011CB400A13B91 /* NVActivityIndicatorView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NVActivityIndicatorView.framework; path = "../../../Library/Developer/Xcode/DerivedData/MSTest-bezeyyhnlyjjjcetatxyyhllbehq/Build/Products/Debug-iphonesimulator/NVActivityIndicatorView/NVActivityIndicatorView.framework"; sourceTree = "<group>"; };
+		325EFE8D2001323D00A13B91 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		32BA72521FFEA465005D4433 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = "Pods/../build/Debug-iphoneos/Alamofire/Alamofire.framework"; sourceTree = "<group>"; };
 		32BA72541FFEA46A005D4433 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = "Pods/../build/Debug-iphoneos/SwiftyJSON/SwiftyJSON.framework"; sourceTree = "<group>"; };
 		32CBF8141FFFD51400973091 /* MainTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTableView.swift; sourceTree = "<group>"; };
@@ -45,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				325EFE8C20011CB400A13B91 /* NVActivityIndicatorView.framework in Frameworks */,
 				32BA72551FFEA46A005D4433 /* SwiftyJSON.framework in Frameworks */,
 				32BA72531FFEA465005D4433 /* Alamofire.framework in Frameworks */,
 				8592E5270B6C140A18E56207 /* Pods_MSTest.framework in Frameworks */,
@@ -85,6 +90,7 @@
 				32CBF8141FFFD51400973091 /* MainTableView.swift */,
 				32CBF8161FFFD5F000973091 /* MainTableViewCell.swift */,
 				325EFE8920010B9E00A13B91 /* WebViewController.swift */,
+				325EFE8D2001323D00A13B91 /* Extensions.swift */,
 			);
 			path = MSTest;
 			sourceTree = "<group>";
@@ -101,6 +107,7 @@
 		EA0073664ED5EA6F621CB63A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				325EFE8B20011CB400A13B91 /* NVActivityIndicatorView.framework */,
 				32BA72541FFEA46A005D4433 /* SwiftyJSON.framework */,
 				32BA72521FFEA465005D4433 /* Alamofire.framework */,
 				BAF9E3730CFD03B2764D2E25 /* Pods_MSTest.framework */,
@@ -220,11 +227,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-MSTest/Pods-MSTest-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/NVActivityIndicatorView/NVActivityIndicatorView.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NVActivityIndicatorView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +254,7 @@
 				32CBF8151FFFD51400973091 /* MainTableView.swift in Sources */,
 				321AC3561FFE9617008542D3 /* AppDelegate.swift in Sources */,
 				32CBF8171FFFD5F000973091 /* MainTableViewCell.swift in Sources */,
+				325EFE8E2001323D00A13B91 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

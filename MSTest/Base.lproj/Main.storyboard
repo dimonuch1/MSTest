@@ -74,14 +74,11 @@
                                         <connections>
                                             <outlet property="picture" destination="e8Q-h8-waL" id="sui-Ta-b9l"/>
                                             <outlet property="title" destination="8In-6e-Si1" id="s7s-Ok-Dgr"/>
-                                            <segue destination="aOH-UV-JQD" kind="show" identifier="goToWebView" id="3gF-N4-dzP"/>
+                                            <segue destination="kdT-zt-0Zx" kind="show" identifier="goToWebView" id="3gF-N4-dzP"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4hz-EQ-XvV">
-                                <rect key="frame" x="178" y="284" width="20" height="20"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mgi-gH-8lj">
                                 <rect key="frame" x="20" y="718" width="984" height="30"/>
                                 <state key="normal" title="Button for regular/regular"/>
@@ -109,14 +106,12 @@
                             </constraint>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="KBt-1Z-EwO" secondAttribute="bottom" constant="80" id="4YG-kA-EwU"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="WVk-ra-qpB" secondAttribute="bottom" constant="20" id="9D9-l4-caF"/>
-                            <constraint firstItem="4hz-EQ-XvV" firstAttribute="centerY" secondItem="KBt-1Z-EwO" secondAttribute="centerY" id="BUd-Fp-c3C"/>
                             <constraint firstItem="KBt-1Z-EwO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="FyJ-bC-cz3"/>
                             <constraint firstItem="mgi-gH-8lj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="I4l-eu-igp"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="1xN-25-ccr" secondAttribute="bottom" constant="8" id="NwQ-r3-sh7"/>
                             <constraint firstAttribute="trailingMargin" secondItem="WVk-ra-qpB" secondAttribute="trailing" id="OdC-g5-GBK"/>
                             <constraint firstItem="mgi-gH-8lj" firstAttribute="top" secondItem="KBt-1Z-EwO" secondAttribute="bottom" constant="30" id="Q9e-cf-OXr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="mgi-gH-8lj" secondAttribute="trailing" id="Rqv-dB-OF1"/>
-                            <constraint firstItem="4hz-EQ-XvV" firstAttribute="centerX" secondItem="KBt-1Z-EwO" secondAttribute="centerX" id="aSq-2a-lrI"/>
                             <constraint firstItem="KBt-1Z-EwO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="bEh-yf-eaN"/>
                             <constraint firstItem="WVk-ra-qpB" firstAttribute="top" secondItem="KBt-1Z-EwO" secondAttribute="bottom" constant="30" id="bbg-iM-4N4"/>
                             <constraint firstItem="WVk-ra-qpB" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ivK-1L-5dA"/>
@@ -201,7 +196,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="MindStudios" id="8tS-gl-C8V"/>
                     <connections>
-                        <outlet property="avtivityIndicator" destination="4hz-EQ-XvV" id="h3L-cp-5lU"/>
                         <outlet property="tableView" destination="KBt-1Z-EwO" id="UAx-aL-eae"/>
                     </connections>
                 </viewController>
@@ -234,13 +228,20 @@
                             <constraint firstItem="cSV-Hs-qVQ" firstAttribute="top" secondItem="iAx-GT-Dek" secondAttribute="top" id="jgG-5F-xj7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="z2E-4E-f3m">
+                        <barButtonItem key="rightBarButtonItem" title="Share" id="CCJ-3p-e7m">
+                            <connections>
+                                <action selector="share:" destination="aOH-UV-JQD" id="DXd-7x-tMt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="webView" destination="cSV-Hs-qVQ" id="U9z-Iq-bbH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qQM-2z-w9B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2193" y="126"/>
+            <point key="canvasLocation" x="3132" y="125.4872563718141"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="siH-9e-Yu2">
@@ -259,6 +260,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d58-bv-hfW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="464.80000000000001" y="-560.86956521739137"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="1nW-4q-htv">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kdT-zt-0Zx" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Px5-xp-8eD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="aOH-UV-JQD" kind="relationship" relationship="rootViewController" id="jKe-1D-g4P"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bsp-Tq-7Fs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2192.8000000000002" y="125.4872563718141"/>
         </scene>
     </scenes>
 </document>

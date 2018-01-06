@@ -10,18 +10,17 @@ import UIKit
 import CoreData
 
 class MainTableView: UITableView {
+
+   
     
     
-    
-    var selectUrl = ""
-    var currenIndexPath:IndexPath?
-    
-    var fetchedResultsController: NSFetchedResultsController<Article>!
     
     func customReloadData() {
         initializeFetchedResultsController()
         self.reloadData()
     }
+    
+    var fetchedResultsController: NSFetchedResultsController<Article>!
     
     func initializeFetchedResultsController() {
         let request = NSFetchRequest<Article>(entityName: "Article")
@@ -59,8 +58,9 @@ extension MainTableView: UITableViewDataSource {
         }
         
         cell.title.text = object.title
-        cell.picture.image = UIImage(data: object.image_medium! as Data)
+        cell.picture.image = UIImage(data: object.image_thumb! as Data)
         cell.url = object.content_url ?? ""
+        cell.index = indexPath
         return cell
     }
 }
@@ -68,12 +68,7 @@ extension MainTableView: UITableViewDataSource {
 extension MainTableView: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.currenIndexPath = indexPath
-        guard let object = self.fetchedResultsController?.object(at: indexPath) else {
-            fatalError("Attempt to configure cell without a managed object")
-        }
-        tableView.deselectRow(at: indexPath, animated: true)
-        selectUrl = object.content_url ?? "none"
+        
     }
     
 }

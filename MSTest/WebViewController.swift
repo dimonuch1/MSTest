@@ -7,31 +7,71 @@
 //
 
 import UIKit
+import CoreData
+import NVActivityIndicatorView
 
 class WebViewController: UIViewController {
 
     var url = ""
+    var indexPath = IndexPath()
     
     @IBOutlet weak var webView: UIWebView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.webView.delegate = self
-        if let urla = URL(string: url) {
-            let request = URLRequest(url: urla)
-            webView.loadRequest(request)
+    var activityIndicator: NVActivityIndicatorView?
+    
+    var fetchedResultsController: NSFetchedResultsController<Article>!
+    
+    func initializeFetchedResultsController() {
+        let request = NSFetchRequest<Article>(entityName: "Article")
+        let departmentSort = NSSortDescriptor(key: "id", ascending: true)
+        request.sortDescriptors = [departmentSort]
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        let moc =  appDelegate?.persistentContainer.viewContext
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc!, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController.delegate = self as? NSFetchedResultsControllerDelegate
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("Failed to initialize FetchedResultsController: \(error)")
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        activityIndicator = NVActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25 , y: self.view.center.y - 50, width: 100, height: 100 ) ,
+                                     type: .pacman ,
+                                    color: .red,
+                                  padding: 0)
+        activityIndicator?.startAnimating()
+        self.view.addSubview(activityIndicator!)
+        self.webView.delegate = self
+        if self.isInternetAvailable() {
+            if let urla = URL(string: url) {
+                let request = URLRequest(url: urla)
+                webView.loadRequest(request)
+            }
+        } else {
+            showAlertWithOutInternet()
+            activityIndicator?.stopAnimating()
+        }
+        
     }
     
     
+    @IBAction func share(_ sender: UIBarButtonItem) {
+        initializeFetchedResultsController()
+        guard let object = self.fetchedResultsController?.object(at: indexPath) else {
+            fatalError("Attempt to configure cell without a managed object")
+        }
+        let activityVc = UIActivityViewController(activityItems: [UIImage(data: object.image_medium! as Data) ?? nil, url], applicationActivities: nil)
+        activityVc.popoverPresentationController?.sourceView = self.view
+        self.present(activityVc, animated: true, completion: nil)
+    }
     
-   
     
+
 
     /*
     // MARK: - Navigation
@@ -49,15 +89,13 @@ class WebViewController: UIViewController {
 extension WebViewController : UIWebViewDelegate {
  
     func webViewDidStartLoad(_ webView: UIWebView) {
-        print("start load")
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        print("finish load")
+        activityIndicator?.stopAnimating()
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        
-    }
     
+    }
 }
