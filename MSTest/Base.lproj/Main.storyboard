@@ -203,7 +203,7 @@
             </objects>
             <point key="canvasLocation" x="1056.5217391304348" y="122.28260869565219"/>
         </scene>
-        <!--Web View Controller-->
+        <!--Article-->
         <scene sceneID="fnY-g4-9TJ">
             <objects>
                 <viewController id="aOH-UV-JQD" customClass="WebViewController" customModule="MSTest" customModuleProvider="target" sceneMemberID="viewController">
@@ -217,7 +217,7 @@
                         <subviews>
                             <webView contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="cSV-Hs-qVQ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -228,7 +228,7 @@
                             <constraint firstItem="cSV-Hs-qVQ" firstAttribute="top" secondItem="iAx-GT-Dek" secondAttribute="top" id="jgG-5F-xj7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="z2E-4E-f3m">
+                    <navigationItem key="navigationItem" title="Article" id="z2E-4E-f3m">
                         <barButtonItem key="rightBarButtonItem" title="Share" id="CCJ-3p-e7m">
                             <connections>
                                 <action selector="share:" destination="aOH-UV-JQD" id="DXd-7x-tMt"/>

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SystemConfiguration
 
+//MARK: - UIViewController
 extension UIViewController {
 
     func isInternetAvailable() -> Bool {

@@ -14,6 +14,7 @@ import NVActivityIndicatorView
 
 class ViewController: UIViewController {
     
+//MARK: - Property
     lazy var managedObjectContext: NSManagedObjectContext = {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         let managedContext = appDelegate?.persistentContainer.viewContext
@@ -21,46 +22,62 @@ class ViewController: UIViewController {
     }()
     
     @IBOutlet weak var tableView: MainTableView!
-    
     var refreshControl = UIRefreshControl()
-    
     var activityIndicator: NVActivityIndicatorView?
     
+//MARK: - Main function
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.alpha = 0
         
-        activityIndicator = NVActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25 , y: self.view.center.y - 50, width: 100, height: 100 ) ,
-                                     type: .pacman ,
+        activityIndicator = NVActivityIndicatorView(frame: CGRect(x: self.view.center.x - 50 , y: self.view.center.y - 50, width: 100, height: 100 ) ,
+                                     type: .ballScaleMultiple,
                                     color: .red,
                                   padding: 0)
         activityIndicator?.startAnimating()
         if activityIndicator != nil {
             self.view.addSubview(activityIndicator!)
         }
-        
+
         refresh()
         
         refreshControl.tintColor = .red
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(reloadTable), for: .valueChanged)
         tableView.addSubview(refreshControl)
         self.refreshControl.attributedTitle = NSAttributedString(string: "Refreshing data")
         
         tableView.dataSource = tableView
-        tableView.delegate   = tableView
         tableView.separatorInset.left = 0
         tableView.separatorInset.top = 0
         
-        tableView.initializeFetchedResultsController()
-        //tableView.rowHeight = UITableViewAutomaticDimension
-        //tableView.estimatedRowHeight = 50
-        
+        tableView.customReloadData()
+    }
+    
+//MARK: - Helper Method
+    func reloadTable() {
+        if self.isInternetAvailable() {
+            deleteAllFromBD()
+            parseAllData()
+        } else {
+            self.showAlertWithOutInternet()
+        }
+        refreshControl.endRefreshing()
     }
     
     func refresh() {
         if self.isInternetAvailable() {
-            deleteAllFromBD()
-            parseAllData()
+            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+            do {
+                if try managedObjectContext.count(for: fetch) < 1 {
+                    parseAllData()
+                } else {
+                    self.tableView.alpha = 1
+                    self.activityIndicator?.stopAnimating()
+                }
+            }  catch {
+                let saveError = error as NSError
+                print(saveError)
+            }
         } else {
             showAlertWithOutInternet()
             activityIndicator?.stopAnimating()
@@ -72,52 +89,34 @@ class ViewController: UIViewController {
         if segue.identifier == "goToWebView" {
             if sender is MainTableViewCell {
                 if let destinationViewController = segue.destination as? WebViewController {
-                    destinationViewController.url = (sender as! MainTableViewCell).url
-                    destinationViewController.indexPath = (sender as! MainTableViewCell).index
+                    destinationViewController.id = (sender as! MainTableViewCell).id
                 }
-                
             }
         }
+    }
+    
+    func imageToData(key: String, obj: (String, JSON)) -> NSData? {
+        let string = obj.1[key].stringValue
+        let url = URL(string: string)
+        if url != nil {
+            let data = try? Data(contentsOf: url!)
+            if data != nil {
+                let image = UIImage(data: data!)
+                if image != nil {
+                    return UIImageJPEGRepresentation(image!, 1)! as NSData
+                }
+            }
+        }
+        return nil
     }
 
     
 //MARK: - Work with data base
     
-    func showAll() {
-        
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
-        fetchRequest.entity = entityDescription
-        
-        do {
-            let result = try managedObjectContext.fetch(fetchRequest)
-            print(result.count)
-            if (result.count > 0) {
-                for person in result {
-                    print((person as! NSManagedObject).value(forKey:"title") ?? "none")
-                    print((person as! NSManagedObject).value(forKey:"id") ?? "none")
-                    print((person as! NSManagedObject).value(forKey:"image_thumb") ?? "none")
-                    print((person as! NSManagedObject).value(forKey:"image_medium") ?? "none")
-                    print((person as! NSManagedObject).value(forKey:"content_url") ?? "none")
-                }
-            }
-            
-        } catch {
-            let fetchError = error as NSError
-            print(fetchError)
-        }
-    }
-    
     func deleteAllFromBD() {
-       
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
-        fetchRequest.entity = entityDescription
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        
         do {
-            //delete all
             try managedObjectContext.execute(request)
             try self.managedObjectContext.save()
         } catch {
@@ -128,33 +127,24 @@ class ViewController: UIViewController {
     
     func parseAllData() {
         Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
-            do {
                 let jsonObj = JSON(response.data!)
                 if jsonObj != JSON.null {
                     for obj in jsonObj {
                         
                         let entity = NSEntityDescription.entity(forEntityName: "Article",
-                                                                in: self.managedObjectContext)!
+                                                                           in: self.managedObjectContext)!
                         let person = NSManagedObject(entity: entity,
-                                                     insertInto: self.managedObjectContext)
+                                                 insertInto: self.managedObjectContext)
                         person.setValue(obj.1["title"].string, forKey: "title")
                         person.setValue(obj.1["id"].int, forKey: "id")
                         person.setValue(obj.1["content_url"].stringValue, forKey: "content_url")
+                        person.setValue(self.imageToData(key: "image_thumb", obj: obj as (String, JSON)), forKey: "image_thumb")
+                        person.setValue(self.imageToData(key: "image_medium", obj: obj as (String, JSON)), forKey: "image_medium")
                         
-                        let string = obj.1["image_thumb"].stringValue
-                        let string2 = obj.1["image_medium"].stringValue
-                        
-                        let url = URL(string: string)
-                        let data = try? Data(contentsOf: url!)
-                        let image = UIImage(data: data!)
-                        let imageData = UIImageJPEGRepresentation(image!, 1)! as NSData
-                        person.setValue(imageData, forKey: "image_thumb")
-                        
-                        let url2 = URL(string: string2)
-                        let data2 = try? Data(contentsOf: url2!)
-                        let image2 = UIImage(data: data2!)
-                        let imageData2 = UIImageJPEGRepresentation(image2!, 1)! as NSData
-                        person.setValue(imageData2, forKey: "image_medium")
+                        let urla = URL(string: obj.1["content_url"].stringValue)
+                        if urla != nil {
+                            person.setValue(try? Data(contentsOf: urla!), forKey: "content_article")
+                        }
                         
                         do {
                             try self.managedObjectContext.save()
@@ -170,8 +160,6 @@ class ViewController: UIViewController {
                 } else {
                     print("Could not get json from file, make sure that file contains valid json.")
                 }
-            } catch let error { print(error.localizedDescription) }
         }
     }
 }
-

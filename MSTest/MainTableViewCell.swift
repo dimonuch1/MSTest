@@ -13,8 +13,7 @@ class MainTableViewCell: UITableViewCell {
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var title: UILabel!
     
-    var url = ""
-    var index = IndexPath()
+    var id = Int.max
     
     override func awakeFromNib() {
         super.awakeFromNib()

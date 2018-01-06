@@ -10,15 +10,6 @@ import UIKit
 import CoreData
 
 class MainTableView: UITableView {
-
-   
-    
-    
-    
-    func customReloadData() {
-        initializeFetchedResultsController()
-        self.reloadData()
-    }
     
     var fetchedResultsController: NSFetchedResultsController<Article>!
     
@@ -30,7 +21,6 @@ class MainTableView: UITableView {
         let moc =  appDelegate?.persistentContainer.viewContext
         fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: moc!, sectionNameKeyPath: nil, cacheName: nil)
         fetchedResultsController.delegate = self as? NSFetchedResultsControllerDelegate
-        
         do {
             try fetchedResultsController.performFetch()
         } catch {
@@ -38,8 +28,10 @@ class MainTableView: UITableView {
         }
     }
     
-    
-
+    func customReloadData() {
+        initializeFetchedResultsController()
+        self.reloadData()
+    }
 }
 
 //MARK: - UITableViewDataSource
@@ -59,18 +51,10 @@ extension MainTableView: UITableViewDataSource {
         
         cell.title.text = object.title
         cell.picture.image = UIImage(data: object.image_thumb! as Data)
-        cell.url = object.content_url ?? ""
-        cell.index = indexPath
+        cell.id = Int(object.id)
         return cell
     }
 }
 
-extension MainTableView: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
-}
-
+//MARK: - NSFetchedResultsControllerDelegate
 extension ViewController: NSFetchedResultsControllerDelegate {}
