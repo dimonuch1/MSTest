@@ -37,6 +37,11 @@ class MainTableView: UITableView {
     
     var fetchedResultsController: NSFetchedResultsController<Article>!
     
+    func customReloadData() {
+        initializeFetchedResultsController()
+        self.reloadData()
+    }
+    
     func initializeFetchedResultsController() {
         let request = NSFetchRequest<Article>(entityName: "Article")
         let departmentSort = NSSortDescriptor(key: "id", ascending: true)

@@ -19,6 +19,7 @@ class ViewController: UIViewController {
         return managedContext!
     }()
     
+    @IBOutlet weak var avtivityIndicator: UIActivityIndicatorView!
     
     @IBOutlet weak var tableView: MainTableView!
     
@@ -26,32 +27,35 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //deleteAllFromBD()
-        //parseAllData()
+        tableView.alpha = 0
+            
+        refresh()
+        
+        refreshControl.tintColor = .red
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        tableView.addSubview(refreshControl)
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Refreshing data")
+        
         tableView.dataSource = tableView
         tableView.delegate   = tableView
         tableView.separatorInset.left = 0
         tableView.separatorInset.top = 0
+        
         tableView.initializeFetchedResultsController()
-        tableView.rowHeight = UITableViewAutomaticDimension
+        //tableView.rowHeight = UITableViewAutomaticDimension
         //tableView.estimatedRowHeight = 50
         
-        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl.addTarget(self, action: "refresh:", for: UIControlEvents.valueChanged)
-        self.tableView?.addSubview(refreshControl)
-        
+    }
+    
+    func refresh() {
+        deleteAllFromBD()
+        parseAllData()
     }
 
     
 //MARK: - Work with data base
     
     func showAll() {
-        
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-//            return
-//        }
-//        
-//        let managedContext = appDelegate.persistentContainer.viewContext
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
         let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
@@ -77,11 +81,9 @@ class ViewController: UIViewController {
     }
     
     func deleteAllFromBD() {
-        //http://madiosgames.com/api/v1/application/ios_test_task/articles
+       
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>()
-        // Create Entity Description
         let entityDescription = NSEntityDescription.entity(forEntityName: "Article", in: managedObjectContext)
-        // Configure Fetch Request
         fetchRequest.entity = entityDescription
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
@@ -93,10 +95,8 @@ class ViewController: UIViewController {
         } catch {
             let saveError = error as NSError
             print(saveError)
-            
         }
     }
-    
     
     func parseAllData() {
         Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
@@ -116,21 +116,11 @@ class ViewController: UIViewController {
                         let string = obj.1["image_thumb"].stringValue
                         let string2 = obj.1["image_medium"].stringValue
                         
-                        //don't work :(
-                        //                        Alamofire.download(obj.1["image_medium"].stringValue).responseData { response in
-                        //                            print(response)
-                        //
-                        //                            if response.result.value != nil {
-                        //                                person.setValue(response.result.value, forKey: "image_medium​")
-                        //                            }
-                        //                        }
-                        
                         let url = URL(string: string)
                         let data = try? Data(contentsOf: url!)
                         let image = UIImage(data: data!)
                         let imageData = UIImageJPEGRepresentation(image!, 1)! as NSData
                         person.setValue(imageData, forKey: "image_thumb")
-                        
                         
                         let url2 = URL(string: string2)
                         let data2 = try? Data(contentsOf: url2!)
@@ -144,7 +134,11 @@ class ViewController: UIViewController {
                             print("Could not save. \(error), \(error.userInfo)")
                         }
                     }
-                    self.tableView.reloadData()
+        
+                    self.tableView.customReloadData()
+                    self.avtivityIndicator.isHidden = true
+                    self.tableView.alpha = 1
+                    self.refreshControl.endRefreshing()
                 } else {
                     print("Could not get json from file, make sure that file contains valid json.")
                 }

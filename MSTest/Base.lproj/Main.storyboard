@@ -24,6 +24,11 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="75" sectionHeaderHeight="5" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="KBt-1Z-EwO" customClass="MainTableView" customModule="MSTest" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableFooterView" contentMode="scaleToFill" id="sn1-IM-KVc">
+                                    <rect key="frame" x="0.0" y="80" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="ano-bn-HCs" customClass="MainTableViewCell" customModule="MSTest" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="5" width="375" height="75"/>
@@ -71,17 +76,23 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4hz-EQ-XvV">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="KBt-1Z-EwO" secondAttribute="bottom" id="4YG-kA-EwU"/>
+                            <constraint firstItem="4hz-EQ-XvV" firstAttribute="centerY" secondItem="KBt-1Z-EwO" secondAttribute="centerY" id="BUd-Fp-c3C"/>
                             <constraint firstItem="KBt-1Z-EwO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="FyJ-bC-cz3"/>
+                            <constraint firstItem="4hz-EQ-XvV" firstAttribute="centerX" secondItem="KBt-1Z-EwO" secondAttribute="centerX" id="aSq-2a-lrI"/>
                             <constraint firstItem="KBt-1Z-EwO" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="bEh-yf-eaN"/>
                             <constraint firstAttribute="trailing" secondItem="KBt-1Z-EwO" secondAttribute="trailing" id="jlS-Wq-gSC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="MindStuios" id="8tS-gl-C8V"/>
                     <connections>
+                        <outlet property="avtivityIndicator" destination="4hz-EQ-XvV" id="h3L-cp-5lU"/>
                         <outlet property="tableView" destination="KBt-1Z-EwO" id="UAx-aL-eae"/>
                     </connections>
                 </viewController>
