@@ -36,7 +36,7 @@ class WebViewController: UIViewController {
     }
     
     func initializeFetchedResultsController(id: Int) {
-        let request = NSFetchRequest<Article>(entityName: "Article")
+        let request = NSFetchRequest<Article>(entityName: String.NamesOfDataBase.article.rawValue)
         let departmentSort = NSSortDescriptor(key: "id", ascending: true)
         request.sortDescriptors = [departmentSort]
         request.predicate = NSPredicate(format: "id == %d", id)

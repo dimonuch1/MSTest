@@ -14,7 +14,7 @@ class MainTableView: UITableView {
     var fetchedResultsController: NSFetchedResultsController<Article>!
     
     func initializeFetchedResultsController() {
-        let request = NSFetchRequest<Article>(entityName: "Article")
+        let request = NSFetchRequest<Article>(entityName: String.NamesOfDataBase.article.rawValue)
         let departmentSort = NSSortDescriptor(key: "id", ascending: true)
         request.sortDescriptors = [departmentSort]
         let appDelegate = UIApplication.shared.delegate as? AppDelegate

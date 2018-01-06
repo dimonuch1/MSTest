@@ -40,3 +40,14 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+
+//MARK: - String
+extension String {
+    enum NamesOfDataBase: String {
+        case article = "Article"
+    }
+    
+    enum Segues: String {
+        case goToWebView = "goToWebView"
+    }
+}

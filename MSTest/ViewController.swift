@@ -66,7 +66,7 @@ class ViewController: UIViewController {
     
     func refresh() {
         if self.isInternetAvailable() {
-            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: String.NamesOfDataBase.article.rawValue)
             do {
                 if try managedObjectContext.count(for: fetch) < 1 {
                     parseAllData()
@@ -86,7 +86,7 @@ class ViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToWebView" {
+        if segue.identifier == String.Segues.goToWebView.rawValue {
             if sender is MainTableViewCell {
                 if let destinationViewController = segue.destination as? WebViewController {
                     destinationViewController.id = (sender as! MainTableViewCell).id
@@ -114,7 +114,7 @@ class ViewController: UIViewController {
 //MARK: - Work with data base
     
     func deleteAllFromBD() {
-        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Article")
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: String.NamesOfDataBase.article.rawValue)
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
         do {
             try managedObjectContext.execute(request)
@@ -131,7 +131,7 @@ class ViewController: UIViewController {
                 if jsonObj != JSON.null {
                     for obj in jsonObj {
                         
-                        let entity = NSEntityDescription.entity(forEntityName: "Article",
+                        let entity = NSEntityDescription.entity(forEntityName: String.NamesOfDataBase.article.rawValue,
                                                                            in: self.managedObjectContext)!
                         let person = NSManagedObject(entity: entity,
                                                  insertInto: self.managedObjectContext)
