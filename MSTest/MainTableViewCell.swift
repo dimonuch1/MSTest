@@ -13,6 +13,8 @@ class MainTableViewCell: UITableViewCell {
     @IBOutlet weak var picture: UIImageView!
     @IBOutlet weak var title: UILabel!
     
+    public var url = ""
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

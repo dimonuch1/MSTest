@@ -51,6 +51,16 @@ class ViewController: UIViewController {
         deleteAllFromBD()
         parseAllData()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToWebView" {
+            if sender is MainTableViewCell {
+                if let destinationViewController = segue.destination as? WebViewController {
+                    destinationViewController.url = (sender as! MainTableViewCell).url
+                }
+            }
+        }
+    }
 
     
 //MARK: - Work with data base

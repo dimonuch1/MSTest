@@ -10,30 +10,11 @@ import UIKit
 import CoreData
 
 class MainTableView: UITableView {
-
-//    fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Article> = {
-//        // Create Fetch Request
-//        let fetchRequest: NSFetchRequest<Article> = Article.fetchRequest()
-//        
-//        // Configure Fetch Request
-//        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: true)]
-//        
-//        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-//
-//        // Create Fetched Results Controller
-//        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: (appDelegate?.persistentContainer.viewContext)!, sectionNameKeyPath: nil, cacheName: nil)
-//        
-//        // Configure Fetched Results Controller
-//        fetchedResultsController.delegate = self as! NSFetchedResultsControllerDelegate
-//        
-//        return fetchedResultsController
-//    }()
     
-    var articles = [Article]() {
-        didSet {
-            reloadData()
-        }
-    }
+    
+    
+    var selectUrl = ""
+    var currenIndexPath:IndexPath?
     
     var fetchedResultsController: NSFetchedResultsController<Article>!
     
@@ -57,6 +38,8 @@ class MainTableView: UITableView {
             fatalError("Failed to initialize FetchedResultsController: \(error)")
         }
     }
+    
+    
 
 }
 
@@ -77,12 +60,21 @@ extension MainTableView: UITableViewDataSource {
         
         cell.title.text = object.title
         cell.picture.image = UIImage(data: object.image_medium! as Data)
-        
+        cell.url = object.content_url ?? ""
         return cell
     }
 }
 
 extension MainTableView: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.currenIndexPath = indexPath
+        guard let object = self.fetchedResultsController?.object(at: indexPath) else {
+            fatalError("Attempt to configure cell without a managed object")
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        selectUrl = object.content_url ?? "none"
+    }
     
 }
 
