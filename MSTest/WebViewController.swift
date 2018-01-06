@@ -53,9 +53,11 @@ class WebViewController: UIViewController {
         if self.isInternetAvailable() {
             if let urla = URL(string: url) {
                 let data = NSData(contentsOf: urla)
+            webView.load(data as! Data, mimeType: "text/html", textEncodingName: "", baseURL: urla)
+                
                 //webView.loadRequest(URLRequest(url: URL(dataRepresentation: data as! Data, relativeTo: nil)!))
-                let request = URLRequest(url: urla)
-                webView.loadRequest(request)
+                //let request = URLRequest(url: urla)
+                //webView.loadRequest(request)
             }
         } else {
             showAlertWithOutInternet()
