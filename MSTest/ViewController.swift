@@ -64,16 +64,18 @@ class ViewController: UIViewController {
         } else {
             showAlertWithOutInternet()
             activityIndicator?.stopAnimating()
+            refreshControl.endRefreshing()
         }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToWebView" {
             if sender is MainTableViewCell {
-                if let destinationViewController = segue.destination.childViewControllers.first as? WebViewController {
+                if let destinationViewController = segue.destination as? WebViewController {
                     destinationViewController.url = (sender as! MainTableViewCell).url
                     destinationViewController.indexPath = (sender as! MainTableViewCell).index
                 }
+                
             }
         }
     }

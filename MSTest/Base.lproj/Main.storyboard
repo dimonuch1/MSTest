@@ -74,7 +74,7 @@
                                         <connections>
                                             <outlet property="picture" destination="e8Q-h8-waL" id="sui-Ta-b9l"/>
                                             <outlet property="title" destination="8In-6e-Si1" id="s7s-Ok-Dgr"/>
-                                            <segue destination="kdT-zt-0Zx" kind="show" identifier="goToWebView" id="3gF-N4-dzP"/>
+                                            <segue destination="aOH-UV-JQD" kind="show" identifier="goToWebView" id="ZWm-3V-0sL"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -260,24 +260,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d58-bv-hfW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="464.80000000000001" y="-560.86956521739137"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="1nW-4q-htv">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kdT-zt-0Zx" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Px5-xp-8eD">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="aOH-UV-JQD" kind="relationship" relationship="rootViewController" id="jKe-1D-g4P"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bsp-Tq-7Fs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2192.8000000000002" y="125.4872563718141"/>
         </scene>
     </scenes>
 </document>

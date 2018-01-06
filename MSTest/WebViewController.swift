@@ -40,6 +40,9 @@ class WebViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       
+        
         activityIndicator = NVActivityIndicatorView(frame: CGRect(x: self.view.center.x - 25 , y: self.view.center.y - 50, width: 100, height: 100 ) ,
                                      type: .pacman ,
                                     color: .red,
@@ -49,6 +52,8 @@ class WebViewController: UIViewController {
         self.webView.delegate = self
         if self.isInternetAvailable() {
             if let urla = URL(string: url) {
+                let data = NSData(contentsOf: urla)
+                //webView.loadRequest(URLRequest(url: URL(dataRepresentation: data as! Data, relativeTo: nil)!))
                 let request = URLRequest(url: urla)
                 webView.loadRequest(request)
             }
