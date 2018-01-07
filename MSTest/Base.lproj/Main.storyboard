@@ -104,7 +104,6 @@
                             <constraint firstAttribute="trailingMargin" secondItem="1xN-25-ccr" secondAttribute="trailing" constant="325" id="3ue-ti-lS5">
                                 <variation key="heightClass=compact-widthClass=regular" constant="0.0"/>
                             </constraint>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="KBt-1Z-EwO" secondAttribute="bottom" constant="80" id="4YG-kA-EwU"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="WVk-ra-qpB" secondAttribute="bottom" constant="20" id="9D9-l4-caF"/>
                             <constraint firstItem="KBt-1Z-EwO" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="FyJ-bC-cz3"/>
                             <constraint firstItem="mgi-gH-8lj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="I4l-eu-igp"/>
@@ -137,11 +136,11 @@
                                 <exclude reference="3df-Yd-tip"/>
                                 <exclude reference="3ue-ti-lS5"/>
                                 <exclude reference="t84-yB-Ys9"/>
+                                <exclude reference="kZF-Ya-gkK"/>
                                 <exclude reference="1D3-1d-7vN"/>
                                 <exclude reference="1qD-F4-ipR"/>
                                 <exclude reference="9D9-l4-caF"/>
                                 <exclude reference="NwQ-r3-sh7"/>
-                                <exclude reference="kZF-Ya-gkK"/>
                                 <exclude reference="nf2-uQ-reK"/>
                                 <exclude reference="s12-MO-bd1"/>
                                 <exclude reference="I4l-eu-igp"/>
@@ -176,8 +175,8 @@
                                 <include reference="v46-w8-ZJd"/>
                             </mask>
                             <mask key="constraints">
-                                <include reference="1D3-1d-7vN"/>
                                 <include reference="kZF-Ya-gkK"/>
+                                <include reference="1D3-1d-7vN"/>
                                 <include reference="nf2-uQ-reK"/>
                                 <include reference="s12-MO-bd1"/>
                             </mask>

@@ -31,7 +31,9 @@ class WebViewController: UIViewController {
         self.webView.delegate = self
         let data = self.fetchedResultsController.fetchedObjects?.first?.content_article
         let baseUrl = self.fetchedResultsController.fetchedObjects?.first?.content_url
-        webView.load(data! as Data, mimeType: "text/html", textEncodingName: "", baseURL: URL(string: baseUrl!)!)
+        if data != nil && baseUrl != nil {
+            webView.load(data! as Data, mimeType: "text/html", textEncodingName: "", baseURL: URL(string: baseUrl!)!)
+        }
         activityIndicator?.stopAnimating()
     }
     

@@ -49,19 +49,18 @@ class ViewController: UIViewController {
         tableView.dataSource = tableView
         tableView.separatorInset.left = 0
         tableView.separatorInset.top = 0
-        
         tableView.customReloadData()
     }
     
 //MARK: - Helper Method
     func reloadTable() {
+        tableView.isUserInteractionEnabled = false
         if self.isInternetAvailable() {
-            deleteAllFromBD()
-            parseAllData()
+            self.deleteAllFromBD()
+            self.parseAllData()
         } else {
             self.showAlertWithOutInternet()
         }
-        refreshControl.endRefreshing()
     }
     
     func refresh() {
@@ -99,9 +98,8 @@ class ViewController: UIViewController {
         let string = obj.1[key].stringValue
         let url = URL(string: string)
         if url != nil {
-            let data = try? Data(contentsOf: url!)
-            if data != nil {
-                let image = UIImage(data: data!)
+            if let data = try? Data(contentsOf: url!) {
+                let image = UIImage(data: data)
                 if image != nil {
                     return UIImageJPEGRepresentation(image!, 1)! as NSData
                 }
@@ -129,34 +127,38 @@ class ViewController: UIViewController {
         Alamofire.request("http://madiosgames.com/api/v1/application/ios_test_task/articles", method: .get, encoding: JSONEncoding.default).responseJSON { response in
                 let jsonObj = JSON(response.data!)
                 if jsonObj != JSON.null {
-                    for obj in jsonObj {
-                        
-                        let entity = NSEntityDescription.entity(forEntityName: String.NamesOfDataBase.article.rawValue,
-                                                                           in: self.managedObjectContext)!
-                        let person = NSManagedObject(entity: entity,
-                                                 insertInto: self.managedObjectContext)
-                        person.setValue(obj.1["title"].string, forKey: "title")
-                        person.setValue(obj.1["id"].int, forKey: "id")
-                        person.setValue(obj.1["content_url"].stringValue, forKey: "content_url")
-                        person.setValue(self.imageToData(key: "image_thumb", obj: obj as (String, JSON)), forKey: "image_thumb")
-                        person.setValue(self.imageToData(key: "image_medium", obj: obj as (String, JSON)), forKey: "image_medium")
-                        
-                        let urla = URL(string: obj.1["content_url"].stringValue)
-                        if urla != nil {
-                            person.setValue(try? Data(contentsOf: urla!), forKey: "content_article")
+                    DispatchQueue.global(qos: .utility).async {
+                        for obj in jsonObj {
+                            
+                            let entity = NSEntityDescription.entity(forEntityName: String.NamesOfDataBase.article.rawValue,
+                                                                               in: self.managedObjectContext)!
+                            let person = NSManagedObject(entity: entity,
+                                                     insertInto: self.managedObjectContext)
+                            person.setValue(obj.1["title"].string, forKey: "title")
+                            person.setValue(obj.1["id"].int, forKey: "id")
+                            person.setValue(obj.1["content_url"].stringValue, forKey: "content_url")
+                            person.setValue(self.imageToData(key: "image_thumb", obj: obj as (String, JSON)), forKey: "image_thumb")
+                            person.setValue(self.imageToData(key: "image_medium", obj: obj as (String, JSON)), forKey: "image_medium")
+                            
+                            let urla = URL(string: obj.1["content_url"].stringValue)
+                            if urla != nil {
+                                person.setValue(try? Data(contentsOf: urla!), forKey: "content_article")
+                            }
+                            
+                            do {
+                                try self.managedObjectContext.save()
+                            } catch let error as NSError {
+                                print("Could not save. \(error), \(error.userInfo)")
+                            }
                         }
-                        
-                        do {
-                            try self.managedObjectContext.save()
-                        } catch let error as NSError {
-                            print("Could not save. \(error), \(error.userInfo)")
+                        DispatchQueue.main.async {
+                            self.tableView.customReloadData()
+                            self.tableView.alpha = 1
+                            self.refreshControl.endRefreshing()
+                            self.activityIndicator?.stopAnimating()
+                            self.tableView.isUserInteractionEnabled = true
                         }
                     }
-        
-                    self.tableView.customReloadData()
-                    self.tableView.alpha = 1
-                    self.refreshControl.endRefreshing()
-                    self.activityIndicator?.stopAnimating()
                 } else {
                     print("Could not get json from file, make sure that file contains valid json.")
                 }

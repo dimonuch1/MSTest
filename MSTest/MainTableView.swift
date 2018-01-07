@@ -50,7 +50,9 @@ extension MainTableView: UITableViewDataSource {
         }
         
         cell.title.text = object.title
-        cell.picture.image = UIImage(data: object.image_thumb! as Data)
+        if object.image_thumb  != nil {
+            cell.picture.image = UIImage(data: object.image_thumb as! Data) ?? UIImage()
+        }
         cell.id = Int(object.id)
         return cell
     }
